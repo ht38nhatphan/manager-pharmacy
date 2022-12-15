@@ -1,0 +1,179 @@
+<div class="container">
+  <form name="container-form" action="/thuocs/handle-form-actions" method="POST">
+  <h1> Danh sách thuốc đã thêm </h1>
+  <br />
+  <div>
+    <a href="/me/trash/thuocs"> Thùng Rác ({{deletedCount}})</a>
+  </div>
+  <br />
+  <div class="mt-4 d-flex align-items-center">
+    <div class="form-check d-flex align-items-center">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value=""
+        id="checkbox-all"
+      />
+      <label class="form-check-label" for="checkbox-all">
+        Chọn tất cả</label>
+    </div>
+    <select
+      class="form-select select-option-form"
+      name="action"
+      aria-label="Default select example"
+      required
+    >
+      <option selected value=""> ---- Hành Động ---- </option>
+      <option value="delete"> Xóa </option>
+
+    </select>
+    <button class="btn btn-primary btn-actions"> Thực hiện </button>
+  </div>
+  <table class="mt-4 table">
+    <thead>
+      <tr>
+        <th scope="col"> </th>
+        <th scope="col">STT</th>
+        <th scope="col">Tên thuốc</th>
+        <th scope="col">Giá</th>
+        <th scope="col">Thời gian tạo</th>
+        <th scope="col"> # </th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each thuocs}}
+        <tr>
+          <td>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="thuocsIds[]"
+                value="{{_id}}"
+                id="checkbox-all"
+              />
+            </div></td>
+          <th scope="row"> {{sum @index 1}} </th>
+          <td>{{name}}</td>
+          <td>{{price}}</td>
+          <td>{{createdAt}}</td>
+          <td><a href="/thuocs/{{_id}}/edit" class="btn btn-edit"> Sửa </a>
+            <a
+              href=""
+              class="btn btn-delete"
+              data-whatever="{{this._id}}"
+              data-toggle="modal"
+              data-target="#delete-thuoc-modal"
+            > Xóa </a></td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="5" style="text-align: center;">
+            Bạn chưa thêm bất kì loại thuốc nào!
+            <a href="/thuocs/create"> THÊM THUỐC NGAY </a>
+          </td>
+        </tr>
+
+      {{/each}}
+    </tbody>
+  </table>
+  </form>
+</div>
+
+{{! Delete Modal }}
+<div class="modal" id="delete-thuoc-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> THÔNG BÁO </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p> Bạn có chắc chắn muốn xóa không ? </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-delete-now" class="btn btn-delete">
+          Xóa ngay
+        </button>
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">
+          Hủy
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{! Delete Hidden form }}
+<form method="POST" name="delete-thuoc-form"> </form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){ 
+    var getID; 
+    var deleteForm = document.forms['delete-thuoc-form']; // get Hidden Delete form
+    var containerForm = document.forms['container-form']; // get Container form
+    var checkboxAll = $('#checkbox-all'); // get Checkbox All
+    var thuocItemCheckbox = $('input[name="thuocsIds[]"]');
+    var btnCheckAllSubmit = $('.btn-actions'); 
+
+  $('#delete-thuoc-modal').on('show.bs.modal', function(event) { 
+    var button = $(event.relatedTarget) 
+  // Button that triggered the
+  getID = button.data('whatever');
+  // Extract info from data-* attributes
+  console.log(getID); 
+  }) 
+  var btnDeleteNow = document.getElementById('btn-delete-now'); 
+  // on click
+  btnDeleteNow.onclick = function(){
+  deleteForm.action = '/thuocs/' + getID + '?_method=DELETE'
+  deleteForm.submit(); 
+  };
+
+  console.log(thuocItemCheckbox)
+  // Check box clicked
+  checkboxAll.change(function(){
+  var isCheckedAll = $(this).prop('checked') 
+  thuocItemCheckbox.prop('checked', isCheckedAll);
+   renderCheckAllSubmitBtn()
+
+  });
+ 
+ // Check box item checkbox Child
+    thuocItemCheckbox.change(function(){
+      var isCheckedAll = thuocItemCheckbox.length === $('input[name="thuocsIds[]"]:checked').length;
+       console.log(isCheckedAll);
+        checkboxAll.prop('checked', isCheckedAll);
+         renderCheckAllSubmitBtn()
+    })
+
+      // check all submit CLICKED
+    // check all submit ACTIONS
+    btnCheckAllSubmit.on('submit', function(e){
+      var isSubmitable = !$(this).hasClass('disabled')
+      if(!isSubmitable){
+        e.preventDefault();
+      }
+    })
+
+     // Re-render check all submit button 
+  function renderCheckAllSubmitBtn(){
+    var checkedCount = $('input[name="thuocsIds[]"]:checked').length;
+    if(checkedCount > 0){
+      btnCheckAllSubmit.removeClass('disabled');
+    } else {
+      btnCheckAllSubmit.addClass('disabled');
+    }
+  }
+  renderCheckAllSubmitBtn()
+  });
+
+ 
+
+</script>

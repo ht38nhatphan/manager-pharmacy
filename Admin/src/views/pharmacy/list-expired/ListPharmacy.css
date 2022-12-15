@@ -1,0 +1,7 @@
+.thumb-item{
+    max-width: 100px;
+}
+.thumb_item img{
+    max-width: 100px;
+    object-fit: contain;
+}

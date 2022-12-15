@@ -1,0 +1,5 @@
+Request: lưu giữ thông tin được gửi lên server (Lấy thông tin từ Client muốn lấy cái gì)
+Response: Lựa chọn kết quả Response để thay đổi status cũng như response
+
+POST: --> Form Data --> Dùng Req.Body
+GET: --> Query String Parameters ---> Dùng Req.query

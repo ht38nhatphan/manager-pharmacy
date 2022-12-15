@@ -1,0 +1,585 @@
+/***********************************************************
+ *
+ * Project name: 	Nimoy · Login & Register Form HTML Template
+ * Decription: 		HTML | Miscellaneous Template for ThemeForest.net
+ * Author: 			ceosDesigns
+ * Link:			http://nimoy.ceosdesigns.sk/ 
+ * Version:			1.00
+ *
+ ************************************************************/
+
+/************************************************************
+ *
+ * *****************
+ * TABLE OF CONTENTS
+ * *****************
+ *
+ *  01. GENERAL
+ *
+ *  02. PRELOADER
+ *
+ *  03. LAYOUT
+ *  	03.01 NON-FORM SIDE
+ *  	03.02 FORM SIDE
+ *
+ *  04. ELEMENTS
+ *  	04.00 TEXT-RELATED
+ *  	04.01 LOGO
+ *  	04.02 FORM INPUTS
+ *  	04.03 FORM CHECK
+ *  	04.04 BUTTON 
+ * 		04.05 SOCIAL
+ * 
+ *  05. MEDIA QUERIES
+ 
+ ************************************************************/
+
+/*****************************/
+/*  01. GENERAL              */
+/*****************************/
+
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+  height: 100%;
+  font-size: 0.875rem;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  line-height: 1.6;
+  color: #1e2022;
+  text-align: left;
+}
+
+h2 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+h2 > a {
+  font-weight: 600;
+}
+
+a {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover {
+  color: #0069d9;
+  text-decoration: none;
+}
+
+label {
+  display: block;
+  color: #1e2022;
+  font-size: 0.875rem;
+}
+
+h3 {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #677788;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/*****************************/
+/*  02. PRELOADER            */
+/*****************************/
+
+#nm-preloader {
+  display: flex;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+  z-index: 11;
+  background-color: #fff;
+  justify-content: center;
+}
+
+/* .nm-ripple {
+display: inline-block;
+position: relative;
+width: 80px;
+height: 80px;
+}
+
+.nm-ripple div {
+position: absolute;
+border: 4px solid #007bff;
+opacity: 1;
+border-radius: 50%;
+animation: nm-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.nm-ripple div:nth-child(2) {
+animation-delay: -0.5s;
+} */
+
+@keyframes nm-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+
+/*****************************/
+/*  03. LAYOUT               */
+/*****************************/
+
+/*****************************/
+/*  03.01 NON-FORM SIDE      */
+/*****************************/
+
+#non-form-side {
+  position: relative;
+  background-image: url("../images/bg_003.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+#non-form-side .overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #007bff;
+  opacity: 30%;
+}
+
+.overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/overlay.png");
+  opacity: 10%;
+}
+
+#page-content {
+  background-image: url("../images/background.jpg");
+  background-size: cover;
+  background-position: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/*****************************/
+/*  03.02 FORM SIDE          */
+/*****************************/
+
+.nm-gp {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.nm-gp-pp {
+  position: absolute;
+  top: 0.75rem;
+  left: 0rem;
+  background-color: transparent !important;
+  color: #007bff;
+  border: none;
+  z-index: 10;
+  font-size: 1rem;
+}
+
+#form-side {
+  background-color: #ffffff;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.nm-mb-0 {
+  margin-bottom: 0rem !important;
+}
+
+.nm-mb-1 {
+  margin-bottom: 1rem !important;
+}
+
+.nm-mb-2 {
+  margin-bottom: 2rem !important;
+}
+
+.nm-aic {
+  align-items: center;
+}
+
+.nm-jcb {
+  justify-content: space-between !important;
+}
+
+.nm-vh-100 {
+  height: 100vh;
+}
+
+.nm-row-ct {
+  display: block;
+  text-align: center !important;
+}
+
+.nm-spcr {
+  margin-top: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.nm-tp-3 {
+  margin-top: 3rem;
+}
+
+.nm-tp-5 {
+  margin-top: 5rem;
+}
+
+.nm-tm-wr {
+  z-index: 1;
+  width: 350px;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 3rem 0rem;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+}
+
+.nm-hr {
+  background: linear-gradient(90deg, #007bff, #0052ea);
+  box-shadow: 0 4px 20px 0 rgba(0, 123, 255, 0.14),
+    0 7px 10px -5px rgba(0, 82, 234, 0.4);
+  margin: -3rem -1rem 2rem;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  color: #fff;
+}
+
+.nm-hr-sm {
+  font-size: 0.75rem;
+  font-weight: 400;
+  padding: 1rem 1rem 0rem;
+  margin-bottom: 0rem;
+}
+
+/*****************************/
+/* 04. ELEMENTS              */
+/*****************************/
+
+/*****************************/
+/*  04.00 TEXT-RELATED       */
+/*****************************/
+
+.nm-lu {
+  color: #8c98a4;
+  border-bottom: 0.0625rem dashed #97a4af;
+}
+
+.nm-lu:hover {
+  border-color: #0052ea;
+}
+
+.nm-ct {
+  text-transform: capitalize !important;
+}
+
+.nm-fs-1 {
+  font-size: 0.875rem;
+}
+
+.nm-fs-2 {
+  font-size: 1rem;
+}
+
+.nm-tm {
+  color: #1e2022 !important;
+}
+
+.nm-fw-bd {
+  font-weight: 600 !important;
+}
+
+.nm-st {
+  padding: 2.5rem;
+}
+
+.nm-fal {
+  margin-right: 0.25rem !important;
+  font-size: 0.875em;
+}
+
+.nm-hvr {
+  transition: all 0.2s ease-in-out;
+}
+
+.nm-hvr:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 11px rgba(0, 123, 255, 0.35);
+}
+
+/*****************************/
+/*  04.01 LOGO               */
+/*****************************/
+
+#logo-container {
+  position: absolute;
+  top: 24px;
+  z-index: 10;
+}
+
+#logo-container img {
+  height: 50px;
+}
+
+/*****************************/
+/*  04.02 FORM INPUTS        */
+/*****************************/
+
+input.form-control {
+  background-color: transparent;
+  border: none;
+  border-bottom: 0.0625rem solid #eeeeff;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #1e2022;
+  padding: 0.75rem 1.5rem;
+  height: 3.225rem;
+}
+
+.form-control:focus {
+  color: #1e2022;
+  outline: 0;
+  box-shadow: none;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: #97a4af;
+  opacity: 1;
+}
+
+.form-control::-moz-placeholder {
+  color: #97a4af;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder {
+  color: #97a4af;
+  opacity: 1;
+}
+
+.form-control::-ms-input-placeholder {
+  color: #97a4af;
+  opacity: 1;
+}
+
+.form-control::placeholder {
+  color: #97a4af;
+  opacity: 1;
+}
+
+/*****************************/
+/*  04.03 FORM CHECK         */
+/*****************************/
+
+.form-check {
+  display: inline-flex;
+}
+
+.form-check input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  width: 1rem;
+  height: 1.3rem;
+  opacity: 0;
+}
+
+.nm-check {
+  cursor: pointer;
+}
+
+.nm-check::before {
+  border-radius: 0.25rem;
+  transition: 0.4s;
+  position: absolute;
+  top: 0.1875rem;
+  left: 0rem;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+  content: "";
+  background-color: #eeeeff;
+  border: 1px solid #97a4af;
+}
+
+.nm-check:hover::before {
+  border-color: #007bff;
+}
+
+.nm-check::after {
+  position: absolute;
+  top: 0.1875rem;
+  left: 0rem;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  content: "";
+  background: no-repeat 50% / 50% 50%;
+}
+
+.form-check {
+  padding-left: 1.5rem;
+  font-weight: 400;
+}
+
+.form-check label {
+  color: #97a4af;
+}
+
+.form-check input:checked ~ .nm-check::before {
+  color: #fff;
+  border-color: #007bff;
+  background-color: #007bff;
+}
+
+.form-check input:checked ~ .nm-check::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");
+}
+
+/*****************************/
+/*  04.04 BUTTON             */
+/*****************************/
+
+.nm-btn-2 {
+  display: inline-block;
+  font-weight: 600;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  padding: 0.5rem 2rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  border-radius: 0.3125rem;
+  box-shadow: 0 4px 20px 0 rgba(0, 123, 255, 0.14),
+    0 7px 10px -5px rgba(0, 82, 234, 0.4);
+}
+
+.nm-btn-1:focus,
+.nm-btn-1:active {
+  box-shadow: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus {
+  box-shadow: none;
+}
+
+/*****************************/
+/*  04.05 SOCIAL             */
+/*****************************/
+
+.social-buttons,
+.social-buttons li {
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.social-buttons {
+  width: 100%;
+  list-style: none;
+  flex-wrap: wrap;
+  margin: 1.5rem 0rem 0rem;
+  justify-content: center;
+}
+
+.social-buttons li {
+  flex-basis: 20%;
+  flex-shrink: 0;
+  margin: 2px;
+}
+
+.social-buttons li:first-child {
+  margin-left: 0px;
+}
+
+.social-buttons li:last-child {
+  margin-right: 0px;
+}
+
+.social-buttons a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 0.3125rem;
+  border: 1px solid rgba(255, 255, 255, 0);
+  transition: 0.4s;
+}
+
+.social-buttons a:hover {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/*****************************/
+/*  05. MEDIA QUERIES        */
+/*****************************/
+
+@media (min-width: 576px) {
+  .nm-sm-tr {
+    text-align: right !important;
+  }
+
+  .nm-mb-sm-0 {
+    margin-bottom: 0rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .nm-mb-md-2 {
+    margin-bottom: 3rem !important;
+  }
+
+  .nm-vh-md-100 {
+    height: 100vh;
+  }
+
+  .nm-st-md {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  #logo-container {
+    position: fixed;
+  }
+}

@@ -1,0 +1,28 @@
+<h1> List thuốc </h1>
+
+<div class="mt-4">
+    <div class="row">
+      
+        <div class="container">
+        <div class="row">
+              {{#each thuocs}}
+            <div class="col-sms" style="margin-bottom: 1rem;">
+                <div class="card thuoc" style="width: 18rem;">
+                    <a href="/thuocs/{{this.slug}}">
+                        <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
+                    </a>
+            
+                     <div class="card-body">
+                    <h5 class="card-title">{{this.name}}</h5>
+                    <p class="card-text">{{this.price}}</p>
+                    <a href="#" class="btn btn-primary"> Tìm hiểu thêm </a>
+                    </div>
+                 </div>
+                 
+                </div>
+                    {{/each}}
+        </div>
+        </div>
+    
+    </div>
+</div>

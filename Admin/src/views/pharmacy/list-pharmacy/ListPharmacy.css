@@ -1,0 +1,13 @@
+.thumb-item {
+  max-width: 100px;
+}
+.thumb_item img {
+  max-width: 100px;
+  object-fit: contain;
+}
+
+.bar-code {
+  max-width: 150px;
+  max-height: 50px;
+  object-fit: contain;
+}
