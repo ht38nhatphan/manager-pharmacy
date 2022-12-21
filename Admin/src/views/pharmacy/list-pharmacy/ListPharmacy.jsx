@@ -3,7 +3,7 @@ import { CSmartTable } from '@coreui/react-pro'
 import { CBadge, CButton, CCollapse, CCardBody, CCard, CCardHeader } from '@coreui/react'
 import EllipsisDropdown from '../../module/EllipsisDropdown'
 import { EyeOutlined, DeleteOutlined, EditOutlined, PrinterOutlined } from '@ant-design/icons'
-import { Card, Menu, message, Popconfirm } from 'antd'
+import { Card, Menu, message, Popconfirm, Space, RangePicker } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteProduct, getAllThuocs } from 'src/redux/apiRequest'
@@ -78,10 +78,10 @@ const ListBranchPharmacy = () => {
         </Menu.Item>
         <Menu.Item>
 
-          <div className="d-flex align-items-center" onClick={() => handleDelete(row)}>
+          <Popconfirm title="Bạn có chắc chắn muốn xóa không?" onConfirm={() => handleDelete(row)}>
             <DeleteOutlined />
-            <span className="ms-2" > Xóa </span>
-          </div>
+            <a> Xóa </a>
+          </Popconfirm>
         </Menu.Item>
       </Menu>
     )
@@ -97,7 +97,7 @@ const ListBranchPharmacy = () => {
     },
     // { key: 'MaThuoc', filter: false, sorter: false },
     { key: 'Images', label: 'Hình Ảnh', filter: false, sorter: false },
-    { key: 'specification', label: 'Quy Cách', filter: false, sorter: false },
+    { key: 'amount', label: 'Số Lượng', filter: false, sorter: false },
     // { key: 'barcode', label: 'Mã Vạch', filter: false, sorter: false },
     { key: 'priceIn', label: 'Giá Nhập', filter: false, sorter: false },
     { key: 'priceOut', label: 'Giá Bán', filter: false, sorter: false },
@@ -162,6 +162,8 @@ const ListBranchPharmacy = () => {
           tableFilter
           tableHeadProps
           // tableFilterPlace
+          tableFilterLabel="Tìm Kiếm"
+          tableFilterPlaceholder="Nhập Thuốc cần tìm"
           tableProps={{
             striped: true,
             hover: true,

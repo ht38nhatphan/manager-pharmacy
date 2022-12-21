@@ -359,24 +359,32 @@ const EditPharmacy = () => {
 
 
   const [inputs, setInputs] = useState({});
-  const [select, setSelect] = useState({});
-
+  const [select, setSelect] = useState({ 'categories': products[id].categories });
+  const [selectone, setSelectOne] = useState({})
   const handleChange = (e) => {
     setInputs((prev) => {
+
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
+  const handleChangSelectOne = (index, value, e) => {
+    value.code == undefined ? setSelectOne({ 'producer': index }) : setSelectOne({ 'brandCountry': index })
+
+  }
   const handleChangSelect = (na, value) => {
     const category = new Array()
     for (let n in value) {
-      category.push(value[n].name)
+
+      category.push(value[n])
     }
     if (value.length > 0) {
       setSelect((prev) => {
+        // console.log(prev);
         return { ...prev, 'categories': [category] };
       });
     }
   }
+
   const handleUpdateProuct = (e) => {
     const mabrand = products.map(x => x.idbrand)
     if (mabrand.findIndex(x => x == inputs.idbrand) != 1 || inputs.idbrand == products[id].idbrand || inputs.idbrand == undefined) {
@@ -395,15 +403,26 @@ const EditPharmacy = () => {
           formData.append(`files`, value);
         }
       }
+      // console.log(select.categories[0]);
+      if (select.categories[0] == products[id].categories) {
+        // console.log(select.categories[0]);
+      }
+      else {
 
-      for (const [key, value] of Object.entries(select)) {
-        for (const [key1, value1] of Object.entries(value)) {
-          for (const [key2, value2] of Object.entries(value1)) {
-            formData.append(`categories`, value2);
+        for (const [key, value] of Object.entries(select)) {
+          for (const [key1, value1] of Object.entries(value)) {
+            for (const [key2, value2] of Object.entries(value1)) {
+              // console.log('aa', value2.value);
+              formData.append(`categories`, value2.value);
+
+            }
           }
         }
       }
       for (const [key, value] of Object.entries(inputs)) {
+        formData.append(key, value);
+      }
+      for (const [key, value] of Object.entries(selectone)) {
         formData.append(key, value);
       }
       updateProduct(user?.accessToken, formData, dispatch, navigate, products[id]._id, axiosJWT);
@@ -448,19 +467,7 @@ const EditPharmacy = () => {
           />
           <CFormFeedback valid>Ok!</CFormFeedback>
         </CCol>
-        <CCol md={4}>
-          <CFormLabel htmlFor="validationCustom02">Mã Thuốc</CFormLabel>
-          <CFormInput
-            type="text"
-            id="validationCustom02"
-            placeholder="Jpanwell"
-            name="idbrand"
-            defaultValue={products[id].idbrand}
-            onChange={handleChange}
-            required
-          />
-          <CFormFeedback valid>Ok!</CFormFeedback>
-        </CCol>
+
         <CCol md={4}>
           <CFormLabel htmlFor="validationCustom02">Tên Thương Hiệu</CFormLabel>
           <CFormInput
@@ -490,7 +497,7 @@ const EditPharmacy = () => {
           />
           <CFormFeedback valid>Ok!</CFormFeedback>
         </CCol>
-        <CCol CCol md={4}>
+        {/* <CCol CCol md={4}>
           <CFormLabel htmlFor="validationCustom04">Dạng Bào Chế</CFormLabel>
 
           <CFormSelect
@@ -514,7 +521,7 @@ const EditPharmacy = () => {
             </option>
           </CFormSelect>
           <CFormFeedback valid>Ok!</CFormFeedback>
-        </CCol>
+        </CCol> */}
 
         <CCol md={4}>
           <CFormLabel htmlFor="validationCustom05">Giá Nhập</CFormLabel>
@@ -565,7 +572,7 @@ const EditPharmacy = () => {
               (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
             }
             defaultValue={products[id].producer}
-            onChange={handleChangSelect}
+            onChange={handleChangSelectOne}
             options={optionsProducer}
           />
 
@@ -596,13 +603,13 @@ const EditPharmacy = () => {
             }
             defaultValue={products[id].brandCountry}
             options={optionsBrandCountry}
-            onChange={handleChangSelect}
+            onChange={handleChangSelectOne}
           />
           <CFormFeedback valid>Ok!</CFormFeedback>
         </CCol>
 
         <CCol md={4}>
-          <CFormLabel htmlFor="validationCustom09">Quy Cách</CFormLabel>
+          <CFormLabel htmlFor="validationCustom09">Đơn Vị Tính</CFormLabel>
           <CFormInput
             type="text"
             id="specificationInput"
@@ -630,18 +637,7 @@ const EditPharmacy = () => {
           </CInputGroup>
           <CFormFeedback valid>Ok!</CFormFeedback>
         </CCol>
-        <CCol md={4}>
-          <CFormLabel htmlFor="validationCustom09">Hỗ Trợ</CFormLabel>
-          <CFormInput
-            type="text"
-            id="specificationInput"
-            name="support"
-            defaultValue={products[id].support}
-            onChange={handleChange}
-            required
-          />
-          <CFormFeedback valid>Ok!</CFormFeedback>
-        </CCol>
+
         <CCol md={4}>
           <CFormLabel htmlFor="validationCustom02">Ngày Hết hạn</CFormLabel>
 

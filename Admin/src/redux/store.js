@@ -5,6 +5,10 @@ import cartSlice from "./cartSlice";
 import productSlice from "./productSlice";
 import navBarSlice from "./navBarSlice";
 import orderSlice from "./orderSlice";
+import countSlice from "./countDeleted";
+import categorySlice from "./categorySlice";
+import unitSlice from "./unitSlice";
+import supelierSlice from "./supelierSlice";
 import {
   persistStore,
   persistReducer,
@@ -42,7 +46,7 @@ const persistConfig = {
   version: 1,
   storage,
 }
-const rootReducer = combineReducers({ auth: authReducer, users: userSlice, cart: cartSlice, product: productSlice, navBarState: navBarSlice, order: orderSlice })
+const rootReducer = combineReducers({ auth: authReducer, users: userSlice, cart: cartSlice, product: productSlice, navBarState: navBarSlice, order: orderSlice, count: countSlice, category: categorySlice, unit: unitSlice, supelier: supelierSlice })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({

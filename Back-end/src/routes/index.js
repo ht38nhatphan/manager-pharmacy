@@ -6,9 +6,10 @@ const userRouter = require('./user');
 const cartRouter = require('./cart');
 const orderRouter = require('./order');
 const stripeRouter = require('./stripe');
-
-
-function route(app){
+const categoriesRouter = require('./categories');
+const supelierRouter = require('./supelier');
+const unitRouter = require('./unit');
+function route(app) {
 
   app.use('/user', userRouter)
   app.use('/auth', authRouter)
@@ -17,6 +18,9 @@ function route(app){
   app.use('/thuocs', thuocRouter)
   app.use('/cart', cartRouter)
   app.use('/stripe', stripeRouter)
+  app.use('/categories', categoriesRouter)
+  app.use('/supelier', supelierRouter)
+  app.use('/unit', unitRouter)
   app.use('/', siteRouter)
 
 }

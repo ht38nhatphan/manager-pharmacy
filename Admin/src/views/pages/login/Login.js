@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginFailed } from "../../../redux/authSlice";
+import { loginFailed, loginSuccess } from "../../../redux/authSlice";
 import {
   CButton,
   CCard,
@@ -18,23 +18,12 @@ import {
 import CIcon from '@coreui/icons-react'
 import { message } from 'antd';
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import { useDispatch } from 'react-redux'
-import { loginUser } from 'src/redux/apiRequest'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllThuocs, getAllUsers, loginUser } from 'src/redux/apiRequest'
 import 'react-toastify/dist/ReactToastify.css';
+import { createAxios } from 'src/createInstance';
 const Login = () => {
-  const [messageApi, contextHolder] = message.useMessage();
-  const success = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'Đăng Nhập Thành Công',
-    });
-  };
-  const error = () => {
-    messageApi.open({
-      type: 'error',
-      content: 'Tài Khoản Hoặc Mật Khẩu Không Chí Xác',
-    });
-  };
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -47,11 +36,15 @@ const Login = () => {
       password: password,
     };
     loginUser(newUser, dispatch, navigate);
+    const user = useSelector((state) => state.auth.login?.currentUser);
+    let axiosJWT = createAxios(user, dispatch, loginSuccess);
+    getAllUsers(user?.accessToken, dispatch, axiosJWT);
+    getAllThuocs(dispatch);
   }
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
-        {contextHolder}
+
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>

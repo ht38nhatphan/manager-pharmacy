@@ -66,7 +66,7 @@ const ListWarehouse = () => {
           itemsPerPage={5}
           pagination
           selectable
-          sorterValue={{ column: 'name', state: 'asc' }}
+          sorterValue={{ column: '_id', column: 'createdAt', state: 'desc' }}
           tableFilter
           tableHeadProps={{
             color: 'primary',

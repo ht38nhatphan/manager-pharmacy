@@ -7,13 +7,14 @@ const middlwareController = require('../app/controllers/MiddlewareController')
 //@router POST /auth/register
 //@desc Register user
 //@access Public
+router.post('/addUser', middlwareController.verifyTokenJustAdminAuth, authController.registerUserForAdmin);
 router.post('/register', authController.registerUser);
 
 //@router POST /auth/Login
-router.post('/login' ,authController.loginUser);
+router.post('/login', authController.loginUser);
 
 //@router POST /auth/Login
-router.post('/loginAdmin' ,authController.loginAdmin);
+router.post('/loginAdmin', authController.loginAdmin);
 
 //@router REFRESH Token
 router.post('/refresh', authController.requestRefreshToken);

@@ -2,13 +2,15 @@ import React, { useEffect } from 'react'
 import { CSmartTable } from '@coreui/react-pro'
 import { CBadge, CButton, CCollapse, CCardBody, CCard, CCardHeader } from '@coreui/react'
 import EllipsisDropdown from '../../module/EllipsisDropdown'
-import { EyeOutlined, DeleteOutlined, EditOutlined, PrinterOutlined } from '@ant-design/icons'
+import { EyeOutlined, DeleteOutlined, EditOutlined, PrinterOutlined, RollbackOutlined } from '@ant-design/icons'
 import { Card, Menu, message, Popconfirm } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteProduct, getAllThuocs, getAllUsers } from 'src/redux/apiRequest'
-import { createAxios } from '../../../createInstance'
-import { loginSuccess } from '../../../redux/authSlice'
+
+import { deleteUser, getAllUsers, getAllUsersDeleted, restoreUser } from 'src/redux/apiRequest'
+import { createAxios } from 'src/createInstance'
+import { loginSuccess, logoutSuccess } from 'src/redux/authSlice'
+
 
 
 const columns = [
@@ -20,7 +22,7 @@ const columns = [
     // label: 'aaa',
   },
   { key: 'email', filter: false, sorter: false, },
-  { key: 'admin', filter: false, sorter: false, },
+  { key: 'admin', label: 'Vai trò  ', filter: false, sorter: false, },
 
   {
     key: 'operation',
@@ -32,42 +34,42 @@ const columns = [
 
 const getBadge = (status) => {
   switch (status) {
-    case 'Hoat Dong':
+    case 'Khách Hàng':
       return 'success'
-    case 'Dang Bao Tri':
-      return 'secondary'
-    case 'Ngung Hoat Dong':
-      return 'warning'
-    case 'Banned':
+    case 'Quản trị viên':
       return 'danger'
     default:
       return 'primary'
   }
 }
+const ListStaffTrash = () => {
 
-const ListStaff = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
+  useEffect(() => {
+    getAllUsersDeleted(dispatch);
+  }, [])
   const user = useSelector((state) => state.auth.login?.currentUser);
   const userList = useSelector((state) => state.users.users?.allUsers);
-  console.log(userList)
+  let axiosJWT = createAxios(user, dispatch, loginSuccess);
   const dropdownMenu = (row) => {
+    //handle DELETE
+    const handlerestoreUser = (id) => {
+      console.log(userList[id]._id)
+      restoreUser(dispatch, userList[id]._id);
+    }
     return (
       <Menu>
         <Menu.Item>
-          <Link className="text-decoration-none" to={'/branch-pharmacy/edit-branch-pharmacy/' + row}>
-            <div className="d-flex align-items-center">
-              <EditOutlined />
-              <span className="ms-2">Sửa</span>
-            </div>
-          </Link>
+          <Popconfirm title="Bạn có chắc chắn muốn khôi phục Tài Khoản này?" onConfirm={() => handlerestoreUser(row)}>
+            <RollbackOutlined />
+            <a> Khôi Phục </a>
+          </Popconfirm>
         </Menu.Item>
         <Menu.Item>
-          <div className="d-flex align-items-center">
+          <Popconfirm title="Bạn có chắc chắn muốn xóa Tài Khoản này không?" onConfirm={() => handlerestoreUser(row)}>
             <DeleteOutlined />
-            <span className="ms-2">Xoa</span>
-          </div>
+            <a> Xóa </a>
+          </Popconfirm>
         </Menu.Item>
       </Menu>
     )
@@ -75,7 +77,8 @@ const ListStaff = () => {
   return (
     <CCard className="mb-4">
       <CCardHeader>
-        <strong>Danh Sach Chi Nhanh</strong>
+        <strong>Danh Sách Tài Khoản ĐÃ BỊ KHÓA! </strong>
+        <Link className="link-trash" to={'/staff/staff-list'}> Trở về </Link>
       </CCardHeader>
       <CCardBody>
         <CSmartTable
@@ -97,13 +100,13 @@ const ListStaff = () => {
           scopedColumns={{
             admin: (item) => (
               <td>
-                <p> {item.admin === true ? 'Quản trị viên' : 'Khách Hàng'}</p>
+                <CBadge color={getBadge(item.admin == true ? `Quản trị viên` : `Khách Hàng`)}>{item.admin === true ? 'Quản trị viên' : 'Khách Hàng'}</CBadge>
               </td>
             ),
             operation: (item) => {
               return (
                 <div className="text-right">
-                  <EllipsisDropdown menu={dropdownMenu(item.ID)} />
+                  <EllipsisDropdown menu={dropdownMenu(item._id)} />
                 </div>
               )
             },
@@ -112,6 +115,8 @@ const ListStaff = () => {
           selectable
           sorterValue={{ column: 'name', state: 'asc' }}
           tableFilter
+          tableFilterLabel='Tìm Kiếm'
+          tableFilterPlaceholder='Nhập gì đó...'
           tableHeadProps
           // tableFilterPlace
           tableProps={{
@@ -124,4 +129,4 @@ const ListStaff = () => {
   )
 }
 
-export default ListStaff
+export default ListStaffTrash

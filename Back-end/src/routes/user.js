@@ -12,7 +12,8 @@ router.put('/:id', middlwareController.verifyTokenAndAuthorization, userControll
 //Delete User
 // [Post] /user/:id
 router.delete('/:id', middlwareController.verifyTokenJustAdminAuth, userController.deleteUser)
-
-
+router.get('/trash', userController.trashAccount)
+router.get('/getCountDeleted', userController.getCountDeleted)
+router.patch('/:id/restore', userController.restore)
 
 module.exports = router;

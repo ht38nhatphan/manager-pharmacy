@@ -11,6 +11,8 @@ const ThuocController = {
         const qCategory = req.query.category;
         const qNew = req.query.new;
         try {
+
+
             let thuocs;
             if (qNew) {
                 thuocs = await Thuoc.find().sort({ createdAt: -1 })
@@ -37,6 +39,10 @@ const ThuocController = {
         const newThuoc = new Thuoc(req.body);
         console.log(newThuoc);
         try {
+            const isthuoc = await Thuoc.findOne({ name: req.body.name });
+            if (isthuoc) {
+                return res.status(400).json("Thuốc Này đã tồn tại!");
+            }
             const thuocSaved = await newThuoc.save();
             res.status(200).json(thuocSaved)
         } catch (error) {
@@ -56,7 +62,12 @@ const ThuocController = {
         console.log(newThuoc)
 
         try {
+            const isthuoc = await Thuoc.findOne({ name: req.body.name });
+            if (isthuoc) {
+                return res.status(400).json("Thuốc Này đã tồn tại!");
+            }
             const thuocSaved = await newThuoc.save();
+
             res.status(200).json(thuocSaved)
         } catch (error) {
             res.status(500).json(error)

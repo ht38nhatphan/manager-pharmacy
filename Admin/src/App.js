@@ -19,28 +19,26 @@ const Login = React.lazy(() => import('./views/pages/login/Login'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
-
+const ExportInvoice = React.lazy(() => import('./views/transaction/export-invoice/ExportInvoice'))
 function App() {
-
   const user = useSelector((state) => state.auth.login.currentUser);
   return (
     <BrowserRouter>
       <Suspense fallback={loading}>
-
         <Routes>
-
-          {/* {user?(<>
-              <Route path="*" name="Dashboard" element={<DefaultLayout />} />
-              <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} />
-              <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
-            </>):(<>
-              <Route exact path="/" name="Login Page" element={<Login />} />
-              <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} />
-              <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
-            </>)} */}
+          {/* {user ? (<>
+            <Route path="*" name="Dashboard" element={<DefaultLayout />} />
+            <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} />
+            <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
+          </>) : (<>
+            <Route exact path="/" name="Login Page" element={<Login />} />
+            <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} />
+            <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
+          </>)} */}
           <Route exact path="/" name="Login Page" element={<Login />} />
+          <Route exact path="/exportinvoice/:id" name="Export Invoice" element={<ExportInvoice />} />
           <Route exact path="/register" name="Register Page" element={<Register />} />
-          <Route exact path="/404" name="Page 404" element={<Page500 />} />
+          <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} />
           <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
           <Route exact path="*" name="Dashboard" element={<DefaultLayout />} />
         </Routes>

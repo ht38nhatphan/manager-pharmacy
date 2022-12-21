@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,9 +6,12 @@ import { createAxios } from "../../createInstance";
 import { logOut } from "../../redux/apiRequest";
 import { logoutSuccess } from "../../redux/authSlice";
 import { AiOutlineShoppingCart } from 'react-icons/ai';
-
+import { deleteProduct } from '../../redux/cartSlice';
 const Header = () => {
+
     const quantity = useSelector(state => state.cart.quantity)
+    const cart = useSelector(state => state.cart)
+
     console.log(quantity)
     const CategoryList = ['Sức Khỏe Tim Mạch', 'Chăm Sóc Da Mặt', 'Hỗ trợ tiêu hóa']
     useEffect(() => {
@@ -36,6 +39,7 @@ const Header = () => {
     const handleLogout = () => {
         logOut(dispatch, id, navigate, accessToken, axiosJWT);
     }
+
     return (
         <header>
             <div id="sticky-header" className="menu-area">
@@ -71,7 +75,7 @@ const Header = () => {
                                             <li className="header-search">
                                                 <form action="#">
                                                     <button><i className="fas fa-search" /></button>
-                                                    <input type="text" placeholder="Search fre Medicines" />
+                                                    <input type="text" placeholder="Tim Kiếm" />
                                                 </form>
                                             </li>
                                             <li className="header-user ">
@@ -108,45 +112,49 @@ const Header = () => {
                                                     </div>
                                                     <span className="cart-price"> </span>
                                                     <ul className="minicart">
-                                                        <li className="d-flex align-items-start">
-                                                            <div className="cart-img">
-                                                                <a href="#"><img src="img/products/cart_p01.jpg" alt="" /></a>
-                                                            </div>
-                                                            <div className="cart-content">
-                                                                <h4><a href="#">Exclusive Winter Jackets</a></h4>
-                                                                <div className="cart-price">
-                                                                    <span className="new">$229.9</span>
-                                                                    <span><del>$229.9</del></span>
-                                                                </div>
-                                                            </div>
-                                                            <div className="del-icon">
-                                                                <a href="#"><i className="far fa-trash-alt" /></a>
-                                                            </div>
-                                                        </li>
-                                                        <li className="d-flex align-items-start">
-                                                            <div className="cart-img">
-                                                                <a href="#"><img src="img/products/cart_p02.jpg" alt="" /></a>
-                                                            </div>
-                                                            <div className="cart-content">
-                                                                <h4><a href="#">Winter Jackets For Women</a></h4>
-                                                                <div className="cart-price">
-                                                                    <span className="new">$229.9</span>
-                                                                    <span><del>$229.9</del></span>
-                                                                </div>
-                                                            </div>
-                                                            <div className="del-icon">
-                                                                <a href="#"><i className="far fa-trash-alt" /></a>
-                                                            </div>
-                                                        </li>
+                                                        {cart.products.map((product) => {
+                                                            // // const [productd, setProductd] = useState();
+                                                            // const cart = useSelector(state => state.cart)
+                                                            // // setProductd(cart)
+                                                            // const handleDelete = (id) => {
+                                                            //     // if (cart.products.length > 0) {
+                                                            //     console.log(product);
+                                                            //     const p = cart.products.filter(i => i._id != id)
+                                                            //     // setProductd(p)
+                                                            //     this.setState({ cart: p })
+                                                            //     // dispatch(deleteProduct(cart))
+                                                            //     // }
+
+                                                            // }
+                                                            return product.length > 0 ? (
+                                                                <></>
+                                                            ) : (<>
+                                                                <li className="d-flex align-items-start">
+                                                                    <div className="cart-img">
+                                                                        <a href="#"><img src={product.Images[0]} alt="" /></a>
+                                                                    </div>
+                                                                    <div className="cart-content">
+                                                                        <h4><a href="#">{product.name}</a></h4>
+                                                                        <div className="cart-price">
+                                                                            <span className="new">{product.priceOut}đ</span>
+                                                                            {/* <span><del>$229.9</del></span> */}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="del-icon">
+                                                                        {/* <a onClick={() => (handleDelete(product._id))}><i className="far fa-trash-alt" /></a> */}
+                                                                    </div>
+                                                                </li>
+                                                            </>)
+                                                        })}
                                                         <li>
                                                             <div className="total-price">
-                                                                <span className="f-left">Total:</span>
-                                                                <span className="f-right">$239.9</span>
+                                                                <span className="f-left">Tổng tiền:</span>
+                                                                <span className="f-right">{cart.total}đ</span>
                                                             </div>
                                                         </li>
                                                         <li>
                                                             <div className="checkout-link">
-                                                                <a href="#">Shopping Cart</a>
+                                                                <Link to="/cart">Giỏ hàng</Link>
                                                                 <a className="black-color" href="#">Checkout</a>
                                                             </div>
                                                         </li>

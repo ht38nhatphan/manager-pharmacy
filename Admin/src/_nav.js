@@ -96,11 +96,11 @@ const _nav = [
         name: 'Danh Sách Thuốc',
         to: '/pharmacy/list-pharmacy',
       },
-      {
-        component: CNavItem,
-        name: 'Tạo Liều Dùng',
-        to: '/pharmacy/add-prescription',
-      },
+      // {
+      //   component: CNavItem,
+      //   name: 'Tạo Liều Dùng',
+      //   to: '/pharmacy/add-prescription',
+      // },
       {
         component: CNavItem,
         name: 'Danh Sách Thuốc Sắp Hết Hạn',
@@ -109,80 +109,85 @@ const _nav = [
     ],
   },
   //branch pharmacy
-  {
-    component: CNavGroup,
-    name: 'Chi Nhanh',
-    to: '/theme/typography',
-    icon: <CIcon icon={cilIndustry} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Tao Chi Nhanh',
-        to: '/branch-pharmacy/add-branch-pharmacy',
-      },
-      {
-        component: CNavItem,
-        name: 'Danh Sach Chi Nhanh',
-        to: '/branch-pharmacy/list-branch-pharmacy',
-      },
-    ],
-  },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Chi Nhanh',
+  //   to: '/theme/typography',
+  //   icon: <CIcon icon={cilIndustry} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Tao Chi Nhanh',
+  //       to: '/branch-pharmacy/add-branch-pharmacy',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Danh Sach Chi Nhanh',
+  //       to: '/branch-pharmacy/list-branch-pharmacy',
+  //     },
+  //   ],
+  // },
   //staff
   {
     component: CNavGroup,
-    name: 'Nhan Vien',
+    name: 'Người dùng',
     to: '/theme/typography',
-    icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Them Nhan Vien',
-        to: '/base/accordion',
+        name: 'Thêm Người Dùng',
+        to: '/staff/add-staff',
       },
       {
         component: CNavItem,
-        name: 'Danh Sach Nhan Vien',
+        name: 'Danh Sách Người Dùng',
         to: '/staff/staff-list',
+      },
+      {
+        component: CNavItem,
+        name: 'Danh Sách Tài Khoản Đã Bị Khóa',
+        to: '/staff/staff-trash',
       },
     ],
   },
-  //list account
-  {
-    component: CNavItem,
-    name: 'Danh Sach Tai Khoan',
-    to: '/theme/typography',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  },
+  // //list account
+  // {
+  //   component: CNavItem,
+  //   name: 'Danh Sach Tai Khoan',
+  //   to: '/theme/typography',
+  //   icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  // },
   //statistic
   {
     component: CNavGroup,
-    name: 'Bao Cao',
+    name: 'Thống Kê',
     to: '/theme/typography',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Doanh Thu Tong',
+        name: 'Doanh Thu Tổng',
         to: '/statistic/total-revenue',
       },
+      // {
+      //   component: CNavItem,
+      //   name: 'Doanh Thu Nhan Vien',
+      //   to: '/statistic/total-staff',
+      // },
+      // {
+      //   component: CNavItem,
+      //   name: 'Doanh Thu Chi Nhanh',
+      //   to: '/statistic/total-branch',
+      // },
       {
         component: CNavItem,
-        name: 'Doanh Thu Nhan Vien',
-        to: '/statistic/total-staff',
-      },
-      {
-        component: CNavItem,
-        name: 'Doanh Thu Chi Nhanh',
-        to: '/statistic/total-branch',
-      },
-      {
-        component: CNavItem,
-        name: 'Uoc Tinh Lai',
+        name: 'Ước Tính Lãi',
         to: '/statistic/profit-estimate',
       },
       {
         component: CNavItem,
-        name: 'Thuoc Ban Chay Nhat',
+        name: 'Thuốc Bán Chạy Nhất',
         to: '/statistic/pharmacy-selling',
       },
       // {
@@ -192,7 +197,7 @@ const _nav = [
       // },
       {
         component: CNavItem,
-        name: 'Khach Hang Mua Nhieu',
+        name: 'Khách Hàng Mua Nhiều Nhất',
         to: '/statistic/customer-buy',
       },
     ],

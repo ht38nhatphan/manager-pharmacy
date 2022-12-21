@@ -5,20 +5,21 @@ const userSlice = createSlice({
     name: "user",
     initialState: {
         users: {
-            allUsers: [],
+            allUsers: null,
             isFetching: false,
             error: false,
+            deletedCount: 0,
         },
         msg: "",
     },
     reducers: {
         getUsersStart: (state) => {
             state.users.isFetching = true;
-            state.users.allUsers = action.payload;
         },
         getUsersSuccess: (state, action) => {
             state.users.isFetching = false;
             state.users.allUsers = action.payload;
+            state.users.deletedCount = 0;
         },
         getUsersFailed: (state) => {
             state.users.isFetching = false;
@@ -28,13 +29,30 @@ const userSlice = createSlice({
             state.users.isFetching = true;
         },
         deleteUsersSuccess: (state, action) => {
-            state.users.isFetching = false;
-            state.msg = action.payload;
+            state.isFetching = false;
+            state.users.allUsers.splice(
+                state.users.allUsers.findIndex((item) => item._id === action.payload),
+                1
+            );
         },
         deleteUsersFailed: (state, action) => {
             state.users.isFetching = false;
             state.users.error = true;
-            state.msg = action.payload;
+        },
+
+        restoreUsersStart: (state) => {
+            state.users.isFetching = true;
+        },
+        restoreUsersSuccess: (state, action) => {
+            state.isFetching = false;
+            state.users.allUsers.splice(
+                state.users.allUsers.findIndex((item) => item._id === action.payload),
+                1
+            );
+        },
+        restoreUsersFailed: (state, action) => {
+            state.users.isFetching = false;
+            state.users.error = true;
         },
 
 
@@ -48,7 +66,10 @@ export const {
     getUsersFailed,
     deleteUsersStart,
     deleteUsersSuccess,
-    deleteUsersFailed
+    deleteUsersFailed,
+    restoreUsersStart,
+    restoreUsersSuccess,
+    restoreUsersFailed
 } = userSlice.actions;
 
 export default userSlice.reducer;

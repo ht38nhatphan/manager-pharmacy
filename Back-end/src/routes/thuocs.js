@@ -20,6 +20,6 @@ router.delete('/:id', middlwareController.verifyTokenJustAdminAuth, thuocControl
 router.delete('/:id/force', middlwareController.verifyTokenJustAdminAuth, thuocController.forceDestroyThuoc)
 // thuocsController.show;
 // router.get('getid/:id', thuocController.getThuocById)
-
+router.get('/:id', thuocController.getThuocById)
 
 module.exports = router;

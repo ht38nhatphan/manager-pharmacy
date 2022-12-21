@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CRow,
   CCol,
@@ -12,8 +12,41 @@ import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllOrder, getAllUsers, getAllThuocs } from 'src/redux/apiRequest'
 const WidgetsDropdown = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getAllOrder(dispatch);
+    getAllUsers(dispatch);
+    getAllThuocs(dispatch);
+
+  }, [])
+  const order = useSelector((state) => state.order.order.order);
+  const product = useSelector((state) => state.product.products);
+  // const data1 = []
+  // const data2 = []
+  let sumpriceinput = null
+  product.map((data, index) => {
+    sumpriceinput += data.priceIn * data.amount
+  })
+  const [data, setData] = useState(order)
+  let sum = data.reduce(function (prev, current) {
+    return prev + +current.sumorder
+  }, 0);
+  // sum = sum + " VND"
+  let sumin = data.reduce(function (prev, current) {
+    return prev + +current.sumorderin
+  }, 0);
+  // sumin = sumin + " VND"
+  let lai = sum - sumin
+  const produc = []
+  const customer = new Set()
+  data.map((dt, index) => {
+    produc.push(dt.products)
+    customer.add(dt.userId)
+  })
+  console.log(customer);
   return (
     <CRow>
       <CCol sm={6} lg={3}>
@@ -22,13 +55,13 @@ const WidgetsDropdown = () => {
           color="primary"
           value={
             <>
-              26K{' '}
-              <span className="fs-6 fw-normal">
+              {customer.size}{' Người'}
+              {/* <span className="fs-6 fw-normal">
                 (-12.4% <CIcon icon={cilArrowBottom} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Khach Hang"
+          title="Khách Hàng"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -109,13 +142,13 @@ const WidgetsDropdown = () => {
           color="info"
           value={
             <>
-              $6.200{' '}
-              <span className="fs-6 fw-normal">
+              {sum}{' đ'}
+              {/* <span className="fs-6 fw-normal">
                 (40.9% <CIcon icon={cilArrowTop} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Doanh Thu Theo Thang"
+          title="Doanh Thu Tháng Này"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -195,13 +228,13 @@ const WidgetsDropdown = () => {
           color="warning"
           value={
             <>
-              2.49{' '}
-              <span className="fs-6 fw-normal">
+              {sumpriceinput}{' đ'}
+              {/* <span className="fs-6 fw-normal">
                 (84.7% <CIcon icon={cilArrowTop} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Doanh Thu Theo Chi Nhanh"
+          title="Tổng Tiền Nhập Thuốc"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -268,13 +301,13 @@ const WidgetsDropdown = () => {
           color="danger"
           value={
             <>
-              44K{' '}
-              <span className="fs-6 fw-normal">
+              {lai}{' đ'}
+              {/* <span className="fs-6 fw-normal">
                 (-23.6% <CIcon icon={cilArrowBottom} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Lai Hang Thang"
+          title="Lãi Tháng Này"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">

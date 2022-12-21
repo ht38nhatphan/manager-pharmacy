@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CCard,
   CCardBody,
@@ -13,38 +13,52 @@ import {
 } from '@coreui/react'
 import { CDateRangePicker, CSmartTable } from '@coreui/react-pro'
 import '../../../assets/style_pro.css'
-const customRanges = {
-  'Hom Nay': [new Date(), new Date()],
-  'Hom Qua': [
-    new Date(new Date().setDate(new Date().getDate() - 1)),
-    new Date(new Date().setDate(new Date().getDate() - 1)),
-  ],
-  '7 Ngay Truoc': [new Date(new Date().setDate(new Date().getDate() - 6)), new Date(new Date())],
-  '30 Ngay Truoc': [new Date(new Date().setDate(new Date().getDate() - 29)), new Date(new Date())],
-  'Thang Nay': [
-    new Date(new Date().setDate(1)),
-    new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
-  ],
-  'Thang Truoc': [
-    new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
-    new Date(new Date().getFullYear(), new Date().getMonth(), 0),
-  ],
-}
 
+import { DatePicker, Space, Button } from 'antd';
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllOrder } from 'src/redux/apiRequest'
+const { RangePicker } = DatePicker;
+import dayjs from 'dayjs';
+import moneyfomat from '../../module/moneyfomat'
+const rangePresets = [
+  {
+    label: 'Ngày Hôm Nay',
+    value: [dayjs().add(0, 'd'), dayjs()],
+  },
+  {
+    label: 'Ngày Hôm Qua',
+    value: [dayjs().add(-1, 'd'), dayjs()],
+  },
+  {
+    label: '1 Tuần Trước',
+    value: [dayjs().add(-7, 'd'), dayjs()],
+  },
+  {
+    label: '2 Tuần Trước',
+    value: [dayjs().add(-14, 'd'), dayjs()],
+  },
+  {
+    label: '1 Tháng Trước',
+    value: [dayjs().add(-30, 'd'), dayjs()],
+  },
+  {
+    label: '90 Ngày Trước',
+    value: [dayjs().add(-90, 'd'), dayjs()],
+  },
+];
 
 
 const columns = [
-  { key: 'ID', _style: { width: '8%' } },
+  { key: '_id', _style: { width: '2%' }, sorter: false },
   {
-    key: 'TenThuoc',
+    key: 'name',
     _style: { width: '40%' },
-    _props: { color: 'primary', className: 'fw-semibold' },
     // replace name use label
-    // label: 'aaa',
+    label: 'Tên Thuốc',
   },
-  'registered',
-  { key: 'Don Vi', filter: false, sorter: false, _style: { width: '20%' } },
-  { key: 'status', _style: { width: '10%' } },
+  { key: 'amount', filter: false, sorter: false, _style: { width: '5%' }, label: 'Số Lượng', },
+  { key: 'priceOut', _style: { width: '10%' }, label: 'Giá Bán', },
+  { key: 'sumprice', _style: { width: '10%' }, label: 'Tổng Tiền', },
   // {
   //   key: 'show_details',
   //   label: '',
@@ -54,72 +68,7 @@ const columns = [
   //   _props: { color: 'primary', className: 'fw-semibold' },
   // },
 ]
-const usersData = [
-  {
-    ID: 0,
-    TenThuoc: 'JDoeohn',
-    donvi: 'Goi',
-    soluong: '1000',
-    gianhap: '20.000',
-    giaban: '20.000',
-  },
-  {
-    ID: 2,
-    TenThuoc: 'JDoeohn',
-    donvi: 'Vien',
-    soluong: '1000',
-    gianhap: '30.000',
-    giaban: '20.000',
-  },
-  {
-    ID: 0,
-    TenThuoc: 'JDoeohn',
-    donvi: 'Goi',
-    soluong: '1000',
-    gianhap: '20.000',
-    giaban: '20.000',
-  },
-  {
-    ID: 2,
-    TenThuoc: 'JDoeohn',
-    donvi: 'Vien',
-    soluong: '1000',
-    gianhap: '30.000',
-    giaban: '20.000',
-  },
-  {
-    ID: 0,
-    TenThuoc: 'JDoeohn',
-    donvi: 'Goi',
-    soluong: '1000',
-    gianhap: '20.000',
-    giaban: '20.000',
-  },
-  {
-    ID: 2,
-    TenThuoc: 'JDoeohn',
-    donvi: 'Vien',
-    soluong: '1000',
-    gianhap: '30.000',
-    giaban: '20.000',
-  },
-  {
-    ID: 0,
-    TenThuoc: 'JDoeohn',
-    donvi: 'Goi',
-    soluong: '1000',
-    gianhap: '20.000',
-    giaban: '20.000',
-  },
-  {
-    ID: 2,
-    TenThuoc: 'JDoeohn',
-    donvi: 'Vien',
-    soluong: '1000',
-    gianhap: '30.000',
-    giaban: '20.000',
-  },
-]
+
 const getBadge = (status) => {
   switch (status) {
     case 'Active':
@@ -136,25 +85,89 @@ const getBadge = (status) => {
 }
 
 const TotalRevenue = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getAllOrder(dispatch);
+  }, [])
+  const order = useSelector((state) => state.order.order.order);
+  // const data1 = []
+  // const data2 = []
+
+  const [data, setData] = useState(order)
+  let sum = data.reduce(function (prev, current) {
+    return prev + +current.sumorder
+  }, 0);
+  sum = sum
+  let sumin = data.reduce(function (prev, current) {
+    return prev + +current.sumorderin
+  }, 0);
+  sumin = sumin
+
+  //get all produt to order
+  const produc = []
+  data.map((dt, index) => {
+    produc.push(...dt.products)
+  })
+
+
+
+  console.log(produc);
+  // let fullproduct = []
+  // for (let i = 0; i < produc.length - 2; i + 2) {
+  //   fullproduct = [...produc[i], ...produc[i + 1]]
+  // }
+  // console.log(fullproduct);
+  const onRangeChange = (dates, dateStrings) => {
+    if (dates) {
+      const today = new Date()
+      // console.log('From: ', dates[0], ', to: ', dates[1]);
+      console.log('hi:    ' + new Date(dateStrings[0]));
+      console.log(String(order[0].dateorder).split('T').slice(0, 1).join(' '));
+      console.log(new Date(String(order[0].dateorder).split('T').slice(0, 1).join(' ')) > new Date(dateStrings[0]));
+      console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+      // let daysBetween = (new Date(dateStrings[1]).getTime() - new Date(dateStrings[0]).getTime()) / (1000 * 3600 * 24);
+      // // if (daysBetween == 0) {
+      //   daysBetween = 1
+      // }
+      setData(order.filter(item => {
+        return (((new Date(String(item.dateorder).split('T').slice(0, 1).join(' ')))
+          >= (new Date(dateStrings[0]))) &&
+          ((new Date(String(item.dateorder).split('T').slice(0, 1).join(' '))) <= (new Date(dateStrings[1]))))
+      }
+      ))
+      order.filter(item => console.log(Math.ceil(today.getTime() - (new Date((String(item.dateorder).split('T').slice(0, 1).join(' ')).split('-').slice(0, 3).join('-'))).getTime()) / (24 * 60 * 60 * 1000)))
+      console.log('Những ngày ở giữa:' + data);
+    } else {
+      console.log('Clear');
+    }
+  };
+  const handleChange = (data) => {
+    // let selectedDateFromCalender = date.toUTCString();
+    // console.log(data.target.placeholder == "Ngày Bắt Đầu" ? 'ngày bắt đầu' + data.target.value : 'ngày kết' + data.target.value);
+    // if(data.target.placeholder == "Ngày Bắt Đầu")
+    setData(order)
+  }
   return (
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Thong ke Tong</strong>
+            <strong>Thống Kê Tổng</strong>
           </CCardHeader>
           <CCardBody>
             <CRow>
-              <CCol md={6}>
-                <CDateRangePicker
-                  className="mb-3"
-                  locale="VN"
-                  placeholder={['Ngay Bat Dau', 'Ngay Ket Thuc']}
-                  ranges={customRanges}
-                />
+              <CCol md={6} style={{ marginBottom: '20px' }}>
+                <Space direction="vertical" size={12}>
+                  <RangePicker
+                    size={"large"}
+                    locale="VN"
+                    presets={rangePresets}
+                    onChange={onRangeChange}
+                    placeholder={['Ngày Bắt Đầu', 'Ngày Kết Thúc']} />
+                </Space>
               </CCol>
               <CCol md={6}>
-                <CButton type="submit">Loc</CButton>
+                <CButton type="submit" onClick={handleChange}>Khôi Phục</CButton>
               </CCol>
               <CCol xs={6}>
                 <CWidgetStatsB
@@ -162,9 +175,9 @@ const TotalRevenue = () => {
                   color="info"
                   progress={{ value: 75 }}
                   inverse
-                  text="Tong Tien Nhap"
-                  title="Tien Nhap"
-                  value="29000 VND"
+                  text="Tổng Tiền Nhập"
+                  title="Tiền Nhập"
+                  value={moneyfomat(sumin)}
                 />
               </CCol>
               <CCol xs={6}>
@@ -173,13 +186,13 @@ const TotalRevenue = () => {
                   color="primary"
                   inverse
                   progress={{ value: 75 }}
-                  text="Tong Tien Ban"
-                  title="Tien Ban"
-                  value="29000 VND"
+                  text="Tổng Tiền Bán"
+                  title="Tiền Bán"
+                  value={moneyfomat(sum)}
                 />
               </CCol>
               <CCardHeader className="mb-3">
-                <strong>Danh Sach Thuoc Ban Duoc</strong>
+                <strong>Danh Sách Thuốc Bán được Bán Được</strong>
               </CCardHeader>
               <CSmartTable
                 // chuyen den trang thu 3
@@ -188,11 +201,11 @@ const TotalRevenue = () => {
                 clickableRows={false}
                 onRowClick
                 // confix columns
-                // columns={columns}
+                columns={columns}
                 // columnFilter
                 columnSorter
                 // footer
-                items={usersData}
+                items={produc}
                 // chon trang
                 itemsPerPageSelect
                 itemsPerPage={5}

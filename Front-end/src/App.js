@@ -11,10 +11,11 @@ import Cart from "./Components/Shopping/Cart";
 import { useSelector } from "react-redux";
 import Footer from "./Components/parts/Footer";
 import Blog from "./Components/HomePage/Blog";
+// import Vnpay from "./Components/Vnpay/Vnpay";
 import Testimonial from "./Components/HomePage/Testimonial";
 import NavBar from "./Components/NavBar/NavBar";
 
-
+require('dotenv').config()
 function App() {
   const user = useSelector((state) => state.auth.login.currentUser);
   const accessToken = user?.accessToken;

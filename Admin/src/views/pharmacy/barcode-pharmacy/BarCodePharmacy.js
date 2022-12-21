@@ -17,7 +17,7 @@ const BarCodePharmacy = () => {
     // onAfterPrint: () => alert('in thành công')
   })
   const { inputRef } = useBarcode({
-    value: products[id].idbrand,
+    value: products[id]._id,
     options: {
       background: '#ccffff',
     }
@@ -38,7 +38,7 @@ const BarCodePharmacy = () => {
                 type="primary"
                 style={{
                   marginTop: 16,
-                  marginLeft: 500,
+                  marginLeft: 300,
                 }}
               >
                 In Mã Vạch PDF

@@ -6,11 +6,11 @@ const mongooseDelete = require("mongoose-delete");
 
 const Thuoc = new Schema({
   brand: { type: String, required: true },
-  idbrand: { type: String, required: true },
+  // idbrand: { type: String, required: true },
   name: { type: String, required: true },
   priceIn: { type: Number, required: true },
   priceOut: { type: Number, required: true },
-  support: { type: String, required: true },
+  // support: { type: String, required: true },
   dosageForm: { type: String },
   specification: { type: String },
   mainPrice: { type: String },

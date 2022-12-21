@@ -36,6 +36,12 @@ const ListBranchPharmacy = React.lazy(() =>
 const ListStaff = React.lazy(() =>
   import('./views/staff/staff-list/ListStaff'),
 )
+const AddStaff = React.lazy(() =>
+  import('./views/staff/add-staff/AddStaff'),
+)
+const StaffTrash = React.lazy(() =>
+  import('./views/staff/staff-list/List-Trash'),
+)
 //Test
 const Test = React.lazy(() => import('./views/pages/test/Test'))
 
@@ -88,6 +94,12 @@ const routes = [
     path: '/staff/staff-list',
     name: 'ListStaff',
     element: ListStaff,
+  },
+  { path: '/staff/staff-trash', name: 'StaffTrash', element: StaffTrash },
+  {
+    path: '/staff/add-staff',
+    name: 'AddStaff',
+    element: AddStaff,
   },
   {
     path: '/branch-pharmacy/edit-branch-pharmacy/:id',

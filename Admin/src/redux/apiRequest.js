@@ -2,9 +2,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess, registerFailed, registerStart, registerSuccess } from "./authSlice";
 import { addProductFail, addProductStart, addProductSuccess, deleteProductFailure, deleteProductStart, deleteProductSuccess, getProductFail, getProductStart, getProductSuccess, updateProductFailure, updateProductStart, updateProductSuccess } from './productSlice';
-import { deleteUsersFailed, deleteUsersStart, deleteUsersSuccess, getUsersFailed, getUsersStart, getUsersSuccess } from './userSlice';
+import { deleteUsersFailed, deleteUsersStart, deleteUsersSuccess, getUsersFailed, getUsersStart, getUsersSuccess, restoreUsersFailed, restoreUsersStart, restoreUsersSuccess } from './userSlice';
 import { getOrderSuccess, getOrderFail, getOrderStart, addOrderStart, addOrderSuccess, addOrderFail, updateOrderStart, updateOrderSuccess, updateOrderFailure, deleteOrderStart, deleteOrderSuccess, deleteOrderFailure } from './orderSlice'
-
+import { getCountStart, getCountFailed, getCountSuccess } from './countDeleted';
+import { getcategorySuccess, addcategorySuccess } from './categorySlice';
+import { getunitSuccess, addunitSuccess } from './unitSlice';
+import { getsupelierSuccess, addsupelierSuccess } from './supelierSlice';
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
@@ -32,11 +35,62 @@ export const registerUser = async (user, dispatch, navigate) => {
 }
 
 // [GET] ALL USER
-export const getAllUsers = async (accessToken, dispatch, axiosJWT) => {
+export const getAllUsers = async (dispatch) => {
+    dispatch(getUsersStart());
+    dispatch(getCountStart());
+    try {
+        const res = await axios.get("/user")
+        const count = await axios.get("/user/getCountDeleted")
+        dispatch(getUsersSuccess(res.data))
+        dispatch(getCountSuccess(count.data))
+    } catch (error) {
+        dispatch(getUsersFailed());
+        dispatch(getCountFailed());
+    }
+}
+
+// DELETE USER
+export const deleteUser = async (accessToken, dispatch, id, axiosJWT) => {
+    dispatch(deleteUsersStart());
+    dispatch(getCountStart());
+    try {
+        const res = await axiosJWT.delete("/user/" + id, {
+            headers: { token: `Bearer ${accessToken}` },
+        })
+        const count = await axios.get("/user/getCountDeleted")
+        dispatch(deleteUsersSuccess(res.data));
+        dispatch(getCountSuccess(count.data))
+        toast.success("Khoá tài khoản thành công!");
+    } catch (error) {
+        dispatch(deleteUsersFailed());
+        dispatch(getCountFailed());
+        toast.error(error.response.data);
+    }
+}
+
+// [POST] ADD USER
+export const addUserForAdmin = async (accessToken, user, dispatch, navigate, axiosJWT) => {
+    dispatch(registerStart());
+    try {
+        await axiosJWT.post("/auth/addUser", user, {
+            headers: { token: `Bearer ${accessToken}` },
+        })
+        dispatch(registerSuccess());
+        console.log(user.password)
+        user.password == "1" && user.name == user.username ? "" : navigate("/staff/staff-list");
+        // navigate("/staff/staff-list");
+        toast.success("Đăng Ký Tài Khoản Mới Thành Công!");
+    } catch (error) {
+        dispatch(registerFailed());
+        toast.error(error.response.data);
+    }
+}
+
+// [GET] ALL USER WERE DELETED
+export const getAllUsersDeleted = async (dispatch) => {
     dispatch(getUsersStart());
     try {
-        const res = await axiosJWT.get("/user", {
-            headers: { token: `Bearer ${accessToken}` },
+        const res = await axios.get("/user/trash", {
         })
         dispatch(getUsersSuccess(res.data))
     } catch (error) {
@@ -44,20 +98,24 @@ export const getAllUsers = async (accessToken, dispatch, axiosJWT) => {
     }
 }
 
-// DELETE USER
-export const deleteUser = async (accessToken, dispatch, id, axiosJWT) => {
-    dispatch(deleteUsersStart());
-    try {
-        const res = await axiosJWT.delete("/user/" + id, {
-            headers: { token: `Bearer ${accessToken}` },
-        })
-        dispatch(deleteUsersSuccess(res.data));
 
+
+
+export const restoreUser = async (dispatch, id) => {
+    dispatch(restoreUsersStart());
+    dispatch(getCountStart());
+    try {
+        const res = await axios.patch(`/user/${id}/restore`, id)
+        const count = await axios.get("/user/getCountDeleted")
+        dispatch(restoreUsersSuccess(res.data));
+        dispatch(getCountSuccess(count.data))
+        toast.success("Khôi Phục Tài Khoản Thành Công!");
     } catch (error) {
-        dispatch(deleteUsersFailed(error.response.data));
+        // dispatch(deleteUsersFailed(error.response.data));
+        dispatch(restoreUsersFailed());
+        dispatch(getCountFailed());
     }
 }
-
 // LOGOUT
 export const logOut = async (dispatch, id, navigate, accessToken, axiosJWT) => {
     dispatch(logoutStart());
@@ -75,7 +133,7 @@ export const logOut = async (dispatch, id, navigate, accessToken, axiosJWT) => {
 export const getAllOrder = async (dispatch) => {
     dispatch(getOrderStart());
     try {
-        const res = await axios.get("/Order/getAllOder")
+        const res = await axios.get("/order/getAllOrder")
         dispatch(getOrderSuccess(res.data))
     } catch (error) {
         dispatch(getOrderFail());
@@ -84,13 +142,10 @@ export const getAllOrder = async (dispatch) => {
 
 }
 // [POST] ADD ORDER
-export const addOrder = async (order, accessToken, dispatch, navigate, axiosJWT) => {
+export const addOrder = async (order, dispatch, navigate) => {
     dispatch(addOrderStart());
     try {
-        const res = await axiosJWT.post("/Order/addorder", order
-            , {
-                headers: { "Content-Type": "multipart/form-data", token: `Bearer ${accessToken}` },
-            })
+        const res = await axios.post("/order/addorder", order)
         console.log(res);
         dispatch(addOrderSuccess(res.data))
         navigate("/transaction/list-invoice")
@@ -155,6 +210,7 @@ export const addThuocs = async (product, accessToken, dispatch, navigate, axiosJ
         //     });
         // }
         // else {
+
         const res = await axiosJWT.post("/thuocs/store", product
             , {
                 headers: { "Content-Type": "multipart/form-data", token: `Bearer ${accessToken}` },
@@ -183,6 +239,7 @@ export const addThuocs = async (product, accessToken, dispatch, navigate, axiosJ
             progress: undefined,
             theme: "dark",
         });
+        toast.error(error.response.data);
         dispatch(addProductFail());
 
     }
@@ -268,4 +325,114 @@ export const updateProduct = async (accessToken, product, dispatch, navigate, id
             theme: "dark",
         });
     }
+
 };
+
+
+// update order quantity
+// [PUT] UPDATE PRODUCTS
+export const updateProductQuantity = async (accessToken, product, dispatch, navigate, id, axiosJWT) => {
+    dispatch(updateProductStart());
+    try {
+
+        // const res2 = await axios.get(`/thuocs/${id}`)
+        // const res1 = await axios.get("/thuocs/getAll")
+        // console.log(res2);
+        const res = await axiosJWT.put(`/thuocs/${id}`, product, {
+            headers: { token: `Bearer ${accessToken}` }
+        });
+        // const idbrand = res1.data.map(x => x.idbrand)
+        dispatch(updateProductSuccess(id, product));
+        navigate("/transaction/list-invoice")
+
+    } catch (err) {
+        dispatch(updateProductFailure());
+        // dispatch(updateProductFailure());
+        // toast.error('Cập Nhật Thất Bại!', {
+        //     position: "bottom-right",
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        //     theme: "dark",
+        // });
+    }
+
+};
+
+
+
+// [GET] ALL categrory
+export const getAllCategory = async (dispatch) => {
+    // dispatch(getProductStart());
+    try {
+        const res = await axios.get("/categories/getAllCategory")
+        dispatch(getcategorySuccess(res.data))
+    } catch (error) {
+    }
+
+
+}
+// [POST] ADD category
+export const addCategory = async (product, dispatch) => {
+    // dispatch(addProductStart());
+    try {
+        // const res1 = await axios.get("/thuocs/getAll")
+        const res = await axios.post("/categories/addCategory", product
+        )
+        dispatch(addcategorySuccess(res.data))
+
+    } catch (error) {
+
+    }
+}
+// [GET] ALL unit
+export const getAllUnit = async (dispatch) => {
+    // dispatch(getProductStart());
+    try {
+        const res = await axios.get("/unit/getAllUnit")
+        dispatch(getunitSuccess(res.data))
+    } catch (error) {
+    }
+
+
+}
+// [POST] ADD unit
+export const addUnit = async (product, dispatch) => {
+    dispatch(addProductStart());
+    try {
+        // const res1 = await axios.get("/thuocs/getAll")
+        const res = await axios.post("/unit/addUnit", product
+        )
+        dispatch(addunitSuccess(res.data))
+
+    } catch (error) {
+
+    }
+}
+// [GET] ALL supelier
+export const getAllSupelier = async (dispatch) => {
+    // dispatch(getProductStart());
+    try {
+        const res = await axios.get("/supelier/getAllSupelier")
+        dispatch(getsupelierSuccess(res.data))
+    } catch (error) {
+    }
+
+
+}
+// [POST] ADD supelier
+export const addSupelier = async (product, dispatch) => {
+    dispatch(addProductStart());
+    try {
+        // const res1 = await axios.get("/thuocs/getAll")
+        const res = await axios.post("/supelier/addSupelier", product
+        )
+        dispatch(addsupelierSuccess(res.data))
+
+    } catch (error) {
+
+    }
+}

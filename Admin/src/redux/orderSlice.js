@@ -5,10 +5,10 @@ const orderSlice = createSlice({
   name: "order",
   initialState: {
     order: {
-      order: [],
+      order: null,
       isFetching: false,
       error: false,
-      success: false
+
     },
   },
   reducers: {
@@ -19,7 +19,7 @@ const orderSlice = createSlice({
     },
     getOrderSuccess: (state, action) => {
       state.isFetching = false;
-      state.order = action.payload;
+      state.order.order = action.payload;
       state.error = false;
     },
     getOrderFail: (state) => {
@@ -34,7 +34,7 @@ const orderSlice = createSlice({
     },
     addOrderSuccess: (state, action) => {
       state.isFetching = false;
-      state.order.push(action.payload);
+      state.order.order.push(action.payload);
 
     },
     addOrderFail: (state) => {
@@ -49,14 +49,16 @@ const orderSlice = createSlice({
     },
     updateOrderSuccess: (state, action) => {
       state.isFetching = false;
-      state.order[
-        state.order.findIndex((item) => item._id === action.payload.id)
+      state.order.order[
+        state.order.order.findIndex((item) => item._id === action.payload.id)
       ] = action.payload.order;
     },
     updateOrderFailure: (state) => {
       state.isFetching = false;
       state.error = true;
     },
+    ////UPDATE Order quantity
+
     //DELETE
     deleteOrderStart: (state) => {
       state.isFetching = true;
