@@ -62,22 +62,26 @@ app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
 app.use("/uploads", express.static('uploads'));
 
+
+
 // HTTP Logger
 app.use(morgan('combined'))
 
 app.use(methodOverride('_method'))
 
-// Template Engine
-app.engine('hbs', engine({
-  extname: '.hbs',
-  helpers: {
-    sum: (a, b) => a + b
-  }
-}));
-//Sets our app to use the handlebars engine
-app.set('view engine', 'hbs');
-//Sets handlebars configurations 
-app.set('views', path.join(__dirname, 'resources/views'));
+
+
+// // Template Engine
+// app.engine('hbs', engine({
+//   extname: '.hbs',
+//   helpers: {
+//     sum: (a, b) => a + b
+//   }
+// }));
+// //Sets our app to use the handlebars engine
+// app.set('view engine', 'hbs');
+// //Sets handlebars configurations 
+// app.set('views', path.join(__dirname, 'resources/views'));
 
 
 

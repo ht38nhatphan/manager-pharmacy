@@ -5,10 +5,10 @@ var router = express.Router();
 
 const siteController = require('../app/controllers/SiteController');
 
- // newsController.index;
+//  // newsController.index;
 
- router.get('/search', siteController.search)
+//  router.get('/search', siteController.search)
 
- router.get('/', siteController.index)
+//  router.get('/', siteController.index)
 
 module.exports = router;
