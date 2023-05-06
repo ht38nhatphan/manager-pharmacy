@@ -64,10 +64,10 @@ app.use("/uploads", express.static('uploads'));
 
 
 
-// HTTP Logger
-app.use(morgan('combined'))
+// // HTTP Logger
+// app.use(morgan('combined'))
 
-app.use(methodOverride('_method'))
+// app.use(methodOverride('_method'))
 
 
 
