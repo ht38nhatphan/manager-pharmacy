@@ -42,9 +42,9 @@ const port = 8000
 //   // Pass to next layer of middleware
 //   next();
 // });
-app.use(
-  cors({ origin: [process.env.REACT_URL, process.env.REACT_URL2] })
-);
+// app.use(
+//   cors({ origin: [process.env.REACT_URL, process.env.REACT_URL2] })
+// );
 
 
 app.use(express.json());
