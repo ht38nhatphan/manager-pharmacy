@@ -12,7 +12,7 @@
     "nodejs",
     "ntv"
   ],
-  "author": "ntv160",
+  "author": "nhatphan",
   "license": "ISC",
   "dependencies": {
     "argon2": "^0.30.1",
