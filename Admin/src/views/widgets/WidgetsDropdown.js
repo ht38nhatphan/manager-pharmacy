@@ -22,31 +22,46 @@ const WidgetsDropdown = () => {
     getAllThuocs(dispatch);
 
   }, [])
+
   const order = useSelector((state) => state.order.order.order);
   const product = useSelector((state) => state.product.products);
   // const data1 = []
   // const data2 = []
   let sumpriceinput = null
+  let lai = 0
+  let sumin = 0
+  let sum = 0
+  const customer = new Set()
+
   product.map((data, index) => {
     sumpriceinput += data.priceIn * data.amount
   })
+
+
   const [data, setData] = useState(order)
-  let sum = data.reduce(function (prev, current) {
-    return prev + +current.sumorder
-  }, 0);
-  // sum = sum + " VND"
-  let sumin = data.reduce(function (prev, current) {
-    return prev + +current.sumorderin
-  }, 0);
-  // sumin = sumin + " VND"
-  let lai = sum - sumin
-  const produc = []
-  const customer = new Set()
-  data.map((dt, index) => {
-    produc.push(dt.products)
-    customer.add(dt.userId)
-  })
-  console.log(customer);
+  if (data != null) {
+    sum = data.reduce(function (prev, current) {
+      return prev + +current.sumorder
+    }, 0);
+    // sum = sum + " VND"
+
+    sumin = data.reduce(function (prev, current) {
+      return prev + +current.sumorderin
+    }, 0);
+    // sumin = sumin + " VND"
+    lai = sum - sumin
+    const produc = []
+
+    data.map((dt, index) => {
+      produc.push(dt.products)
+      customer.add(dt.userId)
+    })
+    console.log(customer);
+  }
+
+
+
+
   return (
     <CRow>
       <CCol sm={6} lg={3}>

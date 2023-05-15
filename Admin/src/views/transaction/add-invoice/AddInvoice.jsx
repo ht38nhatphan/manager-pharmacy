@@ -53,8 +53,10 @@ const AddInvoice = () => {
       label: data.username,
     })
   });
+  const today = new Date();
   const [max, setMax] = useState();
-  const products = useSelector((state) => state.product.products);
+  let products = useSelector((state) => state.product.products);
+  products = products.filter(item => (Math.ceil((new Date(item.exp)).getTime() - today.getTime())) / (24 * 60 * 60 * 1000) > 0)
   const [productstate, setProductState] = useState(products);
   products.map((data, index) => {
     options.push({

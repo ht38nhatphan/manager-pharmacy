@@ -98,6 +98,7 @@ const ProfitEstimate = () => {
   }, 0);
   // sumin = sumin + " VND"
   let estimate = sum - sumin
+  console.log(sum);
   let percent = (estimate / sum) * 100
   percent = roundToTwo(percent)
   // let estimate = data.reduce(function (prev, current) {
