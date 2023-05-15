@@ -11,7 +11,7 @@ import { getsupelierSuccess, addsupelierSuccess } from './supelierSlice';
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
-        const res = await axios.post("http://localhost:8000/auth/loginAdmin", user);
+        const res = await axios.post("https://api-mng.onrender.com/auth/loginAdmin", user);
         dispatch(loginSuccess(res.data));
         navigate("/dashboard")
         toast.success("Đăng Nhập Thành Công");
@@ -24,7 +24,7 @@ export const loginUser = async (user, dispatch, navigate) => {
 export const registerUser = async (user, dispatch, navigate) => {
     dispatch(registerStart());
     try {
-        await axios.post("/auth/register", user);
+        await axios.post("https://api-mng.onrender.com/auth/register", user);
         dispatch(registerSuccess());
         navigate("/login");
         toast.success("Đăng Ký Thành Công");
@@ -39,8 +39,8 @@ export const getAllUsers = async (dispatch) => {
     dispatch(getUsersStart());
     dispatch(getCountStart());
     try {
-        const res = await axios.get("/user")
-        const count = await axios.get("/user/getCountDeleted")
+        const res = await axios.get("https://api-mng.onrender.com/user")
+        const count = await axios.get("https://api-mng.onrender.com/user/getCountDeleted")
         dispatch(getUsersSuccess(res.data))
         dispatch(getCountSuccess(count.data))
     } catch (error) {
@@ -54,10 +54,10 @@ export const deleteUser = async (accessToken, dispatch, id, axiosJWT) => {
     dispatch(deleteUsersStart());
     dispatch(getCountStart());
     try {
-        const res = await axiosJWT.delete("/user/" + id, {
+        const res = await axiosJWT.delete("https://api-mng.onrender.com/user/" + id, {
             headers: { token: `Bearer ${accessToken}` },
         })
-        const count = await axios.get("/user/getCountDeleted")
+        const count = await axios.get("https://api-mng.onrender.com/user/getCountDeleted")
         dispatch(deleteUsersSuccess(res.data));
         dispatch(getCountSuccess(count.data))
         toast.success("Khoá tài khoản thành công!");
@@ -72,7 +72,7 @@ export const deleteUser = async (accessToken, dispatch, id, axiosJWT) => {
 export const addUserForAdmin = async (accessToken, user, dispatch, navigate, axiosJWT) => {
     dispatch(registerStart());
     try {
-        await axiosJWT.post("/auth/addUser", user, {
+        await axiosJWT.post("https://api-mng.onrender.com/auth/addUser", user, {
             headers: { token: `Bearer ${accessToken}` },
         })
         dispatch(registerSuccess());
@@ -90,7 +90,7 @@ export const addUserForAdmin = async (accessToken, user, dispatch, navigate, axi
 export const getAllUsersDeleted = async (dispatch) => {
     dispatch(getUsersStart());
     try {
-        const res = await axios.get("/user/trash", {
+        const res = await axios.get("https://api-mng.onrender.com/user/trash", {
         })
         dispatch(getUsersSuccess(res.data))
     } catch (error) {
@@ -105,8 +105,8 @@ export const restoreUser = async (dispatch, id) => {
     dispatch(restoreUsersStart());
     dispatch(getCountStart());
     try {
-        const res = await axios.patch(`/user/${id}/restore`, id)
-        const count = await axios.get("/user/getCountDeleted")
+        const res = await axios.patch(`https://api-mng.onrender.com/user/${id}/restore`, id)
+        const count = await axios.get("https://api-mng.onrender.com/user/getCountDeleted")
         dispatch(restoreUsersSuccess(res.data));
         dispatch(getCountSuccess(count.data))
         toast.success("Khôi Phục Tài Khoản Thành Công!");
@@ -120,7 +120,7 @@ export const restoreUser = async (dispatch, id) => {
 export const logOut = async (dispatch, id, navigate, accessToken, axiosJWT) => {
     dispatch(logoutStart());
     try {
-        await axiosJWT.post("/auth/logout", id, {
+        await axiosJWT.post("https://api-mng.onrender.com/auth/logout", id, {
             headers: { token: `Bearer ${accessToken}` }
         })
         dispatch(logoutSuccess());
@@ -133,7 +133,7 @@ export const logOut = async (dispatch, id, navigate, accessToken, axiosJWT) => {
 export const getAllOrder = async (dispatch) => {
     dispatch(getOrderStart());
     try {
-        const res = await axios.get("/order/getAllOrder")
+        const res = await axios.get("https://api-mng.onrender.com/order/getAllOrder")
         dispatch(getOrderSuccess(res.data))
     } catch (error) {
         dispatch(getOrderFail());
@@ -145,7 +145,7 @@ export const getAllOrder = async (dispatch) => {
 export const addOrder = async (order, dispatch, navigate) => {
     dispatch(addOrderStart());
     try {
-        const res = await axios.post("/order/addorder", order)
+        const res = await axios.post("https://api-mng.onrender.com/order/addorder", order)
         console.log(res);
         dispatch(addOrderSuccess(res.data))
         navigate("/transaction/list-invoice")
@@ -180,7 +180,7 @@ export const addOrder = async (order, dispatch, navigate) => {
 export const getAllThuocs = async (dispatch) => {
     dispatch(getProductStart());
     try {
-        const res = await axios.get("/thuocs/getAll")
+        const res = await axios.get("https://api-mng.onrender.com/thuocs/getAll")
         dispatch(getProductSuccess(res.data))
     } catch (error) {
         dispatch(getProductFail());
@@ -211,7 +211,7 @@ export const addThuocs = async (product, accessToken, dispatch, navigate, axiosJ
         // }
         // else {
 
-        const res = await axiosJWT.post("/thuocs/store", product
+        const res = await axiosJWT.post("https://api-mng.onrender.com/thuocs/store", product
             , {
                 headers: { "Content-Type": "multipart/form-data", token: `Bearer ${accessToken}` },
             })
@@ -248,7 +248,7 @@ export const addThuocs = async (product, accessToken, dispatch, navigate, axiosJ
 export const deleteProduct = async (accessToken, dispatch, navigate, id, axiosJWT) => {
     dispatch(deleteProductStart());
     try {
-        const res = await axiosJWT.delete(`/thuocs/${id}`, {
+        const res = await axiosJWT.delete(`https://api-mng.onrender.com/thuocs/${id}`, {
             headers: { token: `Bearer ${accessToken}` }
         });
         dispatch(deleteProductSuccess(id));
@@ -281,7 +281,7 @@ export const deleteProduct = async (accessToken, dispatch, navigate, id, axiosJW
 export const deleteForceProduct = async (accessToken, dispatch, id, axiosJWT) => {
     dispatch(deleteProductStart());
     try {
-        const res = await axiosJWT.delete(`/thuocs/${id}/force`);
+        const res = await axiosJWT.delete(`https://api-mng.onrender.com/thuocs/${id}/force`);
         dispatch(deleteProductSuccess(id));
     } catch (err) {
         dispatch(deleteProductFailure());
@@ -295,7 +295,7 @@ export const updateProduct = async (accessToken, product, dispatch, navigate, id
         // const res2 = await axios.get(`/thuocs/${id}`)
         // const res1 = await axios.get("/thuocs/getAll")
         // console.log(res2);
-        const res = await axiosJWT.put(`/thuocs/${id}`, product, {
+        const res = await axiosJWT.put(`https://api-mng.onrender.com/thuocs/${id}`, product, {
             headers: { token: `Bearer ${accessToken}` }
         });
         // const idbrand = res1.data.map(x => x.idbrand)
@@ -338,7 +338,7 @@ export const updateProductQuantity = async (accessToken, product, dispatch, navi
         // const res2 = await axios.get(`/thuocs/${id}`)
         // const res1 = await axios.get("/thuocs/getAll")
         // console.log(res2);
-        const res = await axiosJWT.put(`/thuocs/${id}`, product, {
+        const res = await axiosJWT.put(`https://api-mng.onrender.com/thuocs/${id}`, product, {
             headers: { token: `Bearer ${accessToken}` }
         });
         // const idbrand = res1.data.map(x => x.idbrand)
@@ -368,7 +368,7 @@ export const updateProductQuantity = async (accessToken, product, dispatch, navi
 export const getAllCategory = async (dispatch) => {
     // dispatch(getProductStart());
     try {
-        const res = await axios.get("/categories/getAllCategory")
+        const res = await axios.get("https://api-mng.onrender.com/categories/getAllCategory")
         dispatch(getcategorySuccess(res.data))
     } catch (error) {
     }
@@ -380,7 +380,7 @@ export const addCategory = async (product, dispatch) => {
     // dispatch(addProductStart());
     try {
         // const res1 = await axios.get("/thuocs/getAll")
-        const res = await axios.post("/categories/addCategory", product
+        const res = await axios.post("https://api-mng.onrender.com/categories/addCategory", product
         )
         dispatch(addcategorySuccess(res.data))
 
@@ -392,7 +392,7 @@ export const addCategory = async (product, dispatch) => {
 export const getAllUnit = async (dispatch) => {
     // dispatch(getProductStart());
     try {
-        const res = await axios.get("/unit/getAllUnit")
+        const res = await axios.get("https://api-mng.onrender.com/unit/getAllUnit")
         dispatch(getunitSuccess(res.data))
     } catch (error) {
     }
@@ -404,7 +404,7 @@ export const addUnit = async (product, dispatch) => {
     dispatch(addProductStart());
     try {
         // const res1 = await axios.get("/thuocs/getAll")
-        const res = await axios.post("/unit/addUnit", product
+        const res = await axios.post("https://api-mng.onrender.com/unit/addUnit", product
         )
         dispatch(addunitSuccess(res.data))
 
@@ -416,7 +416,7 @@ export const addUnit = async (product, dispatch) => {
 export const getAllSupelier = async (dispatch) => {
     // dispatch(getProductStart());
     try {
-        const res = await axios.get("/supelier/getAllSupelier")
+        const res = await axios.get("https://api-mng.onrender.com/supelier/getAllSupelier")
         dispatch(getsupelierSuccess(res.data))
     } catch (error) {
     }
@@ -428,7 +428,7 @@ export const addSupelier = async (product, dispatch) => {
     dispatch(addProductStart());
     try {
         // const res1 = await axios.get("/thuocs/getAll")
-        const res = await axios.post("/supelier/addSupelier", product
+        const res = await axios.post("https://api-mng.onrender.com/supelier/addSupelier", product
         )
         dispatch(addsupelierSuccess(res.data))
 
