@@ -11,7 +11,7 @@
     "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
   },
   "license": "MIT",
-  "author": "by me",
+  "author": "by me a",
   "scripts": {
     "build": "react-scripts build",
     "changelog": "auto-changelog --starting-version 4.4.0 --commit-limit false --hide-credit",
