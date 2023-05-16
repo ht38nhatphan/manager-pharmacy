@@ -1,18 +1,3 @@
 {
-  "version": 2,
-  "builds": [
-    { 
-      "src": "*.js", 
-      "use": "@vercel/node",
-      "command": "npm install --force"
-    }
-  ],
-  "routes": [
-
-    { 
-    "src": "/(.*)", 
-    "dest": "/"
-    }
-    
-  ]
+  "version": 23
 }
